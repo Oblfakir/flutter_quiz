@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './quiz_page.dart';
 import './create_question_page.dart';
+import './questions_list_page.dart';
 
 class LandingPage extends StatelessWidget {
   @override
@@ -25,6 +26,14 @@ class LandingPage extends StatelessWidget {
                 color: Colors.amberAccent,
                 onPressed: () => Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new CreateQuestionPage())),
                 child: new Text('Add question'),
+              ),
+            ),
+            new Padding(
+              padding: new EdgeInsets.all(20.0),
+              child: new RaisedButton(
+                color: Colors.blueAccent,
+                onPressed: () => Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new QuestionsListPage())),
+                child: new Text('All questions'),
               ),
             )
           ],

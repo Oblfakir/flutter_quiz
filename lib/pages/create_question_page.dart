@@ -38,7 +38,7 @@ class CreateQuestionState extends State<CreateQuestionPage> {
   
   void onSubmit() async {
     DbAccess dbAccess = new DbAccess();
-    await dbAccess.addQuestion(new Question(questionText, answer));
+    await dbAccess.addQuestion(new Question(-1, questionText, answer));
     returnToLanding();
   }
   

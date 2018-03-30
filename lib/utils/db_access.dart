@@ -28,9 +28,16 @@ class DbAccess {
     List<Map> data = await database.rawQuery('SELECT * FROM Questions');
     List<Question> questions = new List<Question>();
     data.forEach((item) {
-      questions.add(new Question(item['question'], item['answer'] == 1 ? true : false));
+      questions.add(new Question(item['id'], item['question'], item['answer'] == 1 ? true : false));
     });
     return questions;
+  }
+  
+  Future<void> deleteQuestion(Question question) async {
+    String path = await _getDbPath();
+
+    Database database = await openDatabase(path, version: 1);
+    await database.rawDelete('DELETE FROM Questions WHERE id = ?', [question.id]);
   }
   
   Future<void> addQuestion(Question question) async {

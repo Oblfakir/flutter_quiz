@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../utils/db_access.dart';
 import '../utils/question.dart';
+import 'edit_question_page.dart';
 
 class QuestionsListPage extends StatefulWidget {
   @override
@@ -15,7 +16,7 @@ class QuestionsListPage extends StatefulWidget {
 class QuestionsListPageState extends State<QuestionsListPage> {
   List<Widget> _children = new List<Widget>();
   
-  Future<void> getQuestions() async {
+  Future<List<Widget>> getQuestions() async {
     DbAccess dbAccess = new DbAccess();
     List<Question> questions = await dbAccess.getQuestions();
     List<Widget> children = new List<Widget>();
@@ -27,27 +28,41 @@ class QuestionsListPageState extends State<QuestionsListPage> {
           question.question,
           style: new TextStyle(fontSize: 16.0),
         ),
-        trailing: new IconButton(
-          icon: new Icon(Icons.delete, size: 50.0),
-          onPressed: () async {
-            dbAccess.deleteQuestion(question);
-            await getQuestions();
-          },
+        trailing: new Row(
+          children: <Widget>[
+            new IconButton(
+              icon: new Icon(Icons.edit, size: 30.0),
+              onPressed: () async {
+                Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new EditQuestionPage(question)));
+              },
+            ),
+            new IconButton(
+              icon: new Icon(Icons.delete, size: 30.0),
+              onPressed: () async {
+                await dbAccess.deleteQuestion(question);
+                refreshQuestions();
+              },
+            )
+          ],
         ),
       ));
       children.add(new Divider());
     });
-    
-    this.setState(() {
-      _children = children;
-    });
+    return children;
   }
   
   @override
   void initState() {
     super.initState();
-    
-    getQuestions();
+    refreshQuestions();
+  }
+  
+  void refreshQuestions() {
+    getQuestions().then((List<Widget> children) {
+      this.setState(() {
+        _children = children;
+      });
+    });
   }
   
   @override

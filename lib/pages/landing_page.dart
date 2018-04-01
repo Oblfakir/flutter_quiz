@@ -11,13 +11,13 @@ class LandingPage extends StatelessWidget {
       child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new Text('Lets quiz', style: new TextStyle(color: Colors.white, fontSize: 50.0, fontWeight: FontWeight.bold),),
+            new Text('Quiz', style: new TextStyle(color: Colors.white, fontSize: 50.0, fontWeight: FontWeight.bold),),
             new Padding(
               padding: new EdgeInsets.all(20.0),
               child: new RaisedButton(
                 color: Colors.redAccent,
                 onPressed: () => Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new QuizPage())),
-                child: new Text('Quiz'),
+                child: new Text('Quiz', style: new TextStyle(fontSize: 20.0),),
               ),
             ),
             new Padding(
@@ -25,7 +25,7 @@ class LandingPage extends StatelessWidget {
               child: new RaisedButton(
                 color: Colors.amberAccent,
                 onPressed: () => Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new CreateQuestionPage())),
-                child: new Text('Add question'),
+                child: new Text('Add question', style: new TextStyle(fontSize: 20.0),),
               ),
             ),
             new Padding(
@@ -33,7 +33,7 @@ class LandingPage extends StatelessWidget {
               child: new RaisedButton(
                 color: Colors.blueAccent,
                 onPressed: () => Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new QuestionsListPage())),
-                child: new Text('All questions'),
+                child: new Text('All questions', style: new TextStyle(fontSize: 20.0),),
               ),
             )
           ],

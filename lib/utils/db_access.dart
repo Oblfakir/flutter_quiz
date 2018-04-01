@@ -30,7 +30,16 @@ class DbAccess {
     data.forEach((item) {
       questions.add(new Question(item['id'], item['question'], item['answer'] == 1 ? true : false));
     });
+    await database.close();  
     return questions;
+  }
+  
+  Future<void> updateQuestion(int id, Question question) async {
+    String path = await _getDbPath();
+
+    Database database = await openDatabase(path, version: 1);
+    await database.rawUpdate('UPDATE Questions SET question = ?, answer = ? WHERE id = ?', [question.question, question.answer, id]);
+    await database.close();
   }
   
   Future<void> deleteQuestion(Question question) async {
@@ -38,6 +47,7 @@ class DbAccess {
 
     Database database = await openDatabase(path, version: 1);
     await database.rawDelete('DELETE FROM Questions WHERE id = ?', [question.id]);
+    await database.close();  
   }
   
   Future<void> addQuestion(Question question) async {

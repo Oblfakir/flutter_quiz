@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import '../utils/db_access.dart';
 import '../utils/question.dart';
-import './landing_page.dart';
+import 'questions_list_page.dart';
 
-class CreateQuestionPage extends StatefulWidget {
+class EditQuestionPage extends StatefulWidget {
+  
+  final Question question;
+  
+  EditQuestionPage(this.question);
 
   @override
   State<StatefulWidget> createState() {
-    return new CreateQuestionState();
+    return new EditQuestionState();
   }
 }
 
-class CreateQuestionState extends State<CreateQuestionPage> with SingleTickerProviderStateMixin{
+class EditQuestionState extends State<EditQuestionPage> with SingleTickerProviderStateMixin{
   Animation<double> _textAnimation;
   AnimationController _textAnimationController;
   TextEditingController textEditingController;
@@ -21,9 +25,11 @@ class CreateQuestionState extends State<CreateQuestionPage> with SingleTickerPro
   @override
   void initState() {
     super.initState();
-    questionText = '';
-    answer = false;
-    textEditingController = new TextEditingController();
+    questionText = widget.question.question;
+    answer = widget.question.answer;
+    textEditingController = new TextEditingController(
+      text: questionText
+    );
     
     _textAnimationController = new AnimationController(
       duration: new Duration(milliseconds: 500),
@@ -54,11 +60,11 @@ class CreateQuestionState extends State<CreateQuestionPage> with SingleTickerPro
   
   void onSubmit() async {
     DbAccess dbAccess = new DbAccess();
-    await dbAccess.addQuestion(new Question(-1, questionText, answer));
-    
-    Navigator.of(context).pushAndRemoveUntil(
-      new MaterialPageRoute(builder: (BuildContext context) => new LandingPage()), 
-      (Route route) => route == null
+    await dbAccess.updateQuestion(widget.question.id, new Question(-1, questionText, answer));
+    Navigator.of(context).pop(context);
+    Navigator.of(context).pop(context);
+    Navigator.of(context).push(
+      new MaterialPageRoute(builder: (BuildContext context) => new QuestionsListPage())
     );
   }
   
@@ -93,7 +99,7 @@ class CreateQuestionState extends State<CreateQuestionPage> with SingleTickerPro
                     padding: new EdgeInsets.only(top: 40.0),
                     child: new RaisedButton(
                       color: Colors.greenAccent,
-                      child: new Text("Add question", style: new TextStyle(fontSize: 20.0),),
+                      child: new Text("Edit question", style: new TextStyle(fontSize: 20.0),),
                       onPressed: () => onSubmit()
                     )
                   )
